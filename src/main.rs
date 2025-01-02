@@ -50,6 +50,7 @@ impl proof_of_existence::Config for Runtime {
 }
 impl pow_pos::Config for Runtime {
     type Balance = types::Balance;
+ 
     
 }
 
@@ -153,20 +154,21 @@ fn main() {
 		],
 	};
 
-    let block_3 = types::Block {
+    runtime.pow_pos.stake(alice.clone(), 100u128).unwrap();
+
+     let block_3 = types::Block {
         header: support::Header { block_number: 3 },
         extrinsics: vec![
             support::Extrinsic {
                 caller: alice.clone(),
                 call: RuntimeCall::PowPos(pow_pos::Call::MineBlock {
-                    block_number: 4,
-                }),
+                    block_number: 3,
+                    proof_of_work: 5000                }),
             },
-            
             support::Extrinsic {
                 caller: bob.clone(),
                 call: RuntimeCall::PowPos(pow_pos::Call::Stake {
-                    amount: 50, 
+                    amount: 50,
                 }),
             },
         ],
